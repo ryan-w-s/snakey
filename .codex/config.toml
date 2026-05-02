@@ -2,3 +2,4 @@
 command = "node"
 args = ['C:\Users\ryans\AppData\Roaming\itch\apps\godot-mcp-pro\server\build\index.js']
 cwd = 'C:\Users\ryans\Documents\Code\snakey'
+env = { GODOT_MCP_PORT = "6505" }
