@@ -25,6 +25,7 @@ var _step_time: float = initial_step_time
 var _step_accumulator: float = 0.0
 var _rng := RandomNumberGenerator.new()
 var _touch_start := Vector2.ZERO
+var _is_swiping := false
 
 @onready var _board: GridBoard = GridBoard.new()
 @onready var _renderer: SnakeRenderer = SnakeRenderer.new()
@@ -36,11 +37,13 @@ func _ready() -> void:
 
 	_board.columns = columns
 	_board.rows = rows
+	_board.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_board.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(_board)
 
 	_renderer.columns = columns
 	_renderer.rows = rows
+	_renderer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_renderer.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(_renderer)
 
@@ -99,6 +102,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		_try_turn(Vector2i.RIGHT)
 	elif event.is_action_pressed("pause"):
 		toggle_pause()
+	elif event is InputEventKey:
+		_handle_key_input(event as InputEventKey)
 
 
 func _gui_input(event: InputEvent) -> void:
@@ -106,14 +111,22 @@ func _gui_input(event: InputEvent) -> void:
 		var touch_event := event as InputEventScreenTouch
 		if touch_event.pressed:
 			_touch_start = touch_event.position
+			_is_swiping = true
 		else:
+			if not _is_swiping:
+				return
+			_is_swiping = false
 			_handle_swipe(touch_event.position - _touch_start)
 	elif event is InputEventMouseButton:
 		var mouse_event := event as InputEventMouseButton
 		if mouse_event.button_index == MOUSE_BUTTON_LEFT:
 			if mouse_event.pressed:
 				_touch_start = mouse_event.position
+				_is_swiping = true
 			else:
+				if not _is_swiping:
+					return
+				_is_swiping = false
 				_handle_swipe(mouse_event.position - _touch_start)
 
 
@@ -125,6 +138,23 @@ func _handle_swipe(delta: Vector2) -> void:
 		_try_turn(Vector2i.RIGHT if delta.x > 0.0 else Vector2i.LEFT)
 	else:
 		_try_turn(Vector2i.DOWN if delta.y > 0.0 else Vector2i.UP)
+
+
+func _handle_key_input(event: InputEventKey) -> void:
+	if not event.pressed or event.echo:
+		return
+
+	match event.physical_keycode:
+		KEY_UP, KEY_W:
+			_try_turn(Vector2i.UP)
+		KEY_DOWN, KEY_S:
+			_try_turn(Vector2i.DOWN)
+		KEY_LEFT, KEY_A:
+			_try_turn(Vector2i.LEFT)
+		KEY_RIGHT, KEY_D:
+			_try_turn(Vector2i.RIGHT)
+		KEY_ESCAPE, KEY_SPACE:
+			toggle_pause()
 
 
 func _try_turn(new_direction: Vector2i) -> void:
