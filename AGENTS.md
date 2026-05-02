@@ -2,6 +2,10 @@
 
 You have access to the Godot MCP Pro toolset for building and testing Godot games through the editor. Follow these rules carefully.
 
+## Project Context
+
+This project is a Snake clone built in Godot 4.6.2. It is intended for mobile release with a vertical portrait resolution, so design gameplay, UI, camera framing, controls, and screenshots around a tall phone viewport first.
+
 ## Critical: Editor vs Runtime Tools
 
 Tools are split into two categories. **Using a runtime tool without starting the game will always fail.**
