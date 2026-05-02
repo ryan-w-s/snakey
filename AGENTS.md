@@ -4,7 +4,7 @@ You have access to the Godot MCP Pro toolset for building and testing Godot game
 
 ## Project Context
 
-This project is a Snake clone built in Godot 4.6.2. It is intended for mobile release with a vertical portrait resolution, so design gameplay, UI, camera framing, controls, and screenshots around a tall phone viewport first.
+This project is a Snake clone built in Godot 4.6.2. It is intended for mobile release with a vertical portrait resolution, so design gameplay, UI, camera framing, controls, and screenshots around a 9:16 tall phone viewport first. The theme is neon blue.
 
 ## Critical: Editor vs Runtime Tools
 
