@@ -59,7 +59,7 @@ func reset() -> void:
 	_step_time = initial_step_time
 	_step_accumulator = 0.0
 
-	var center := Vector2i(columns / 2.0, rows / 2.0)
+	var center := Vector2i(floori(float(columns) / 2.0), floori(float(rows) / 2.0))
 	_snake.clear()
 	_snake.append(center)
 	_snake.append(center + Vector2i.LEFT)

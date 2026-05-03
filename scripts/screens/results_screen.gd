@@ -105,10 +105,10 @@ func _layout() -> void:
 	if viewport_size == Vector2.ZERO:
 		viewport_size = DESIGN_SIZE
 
-	var scale := minf(viewport_size.x / DESIGN_SIZE.x, viewport_size.y / DESIGN_SIZE.y)
-	var side_margin := maxf(32.0 * scale, viewport_size.x * 0.056)
-	var button_width := minf(360.0 * scale, viewport_size.x - side_margin * 2.0)
-	var button_height := 76.0 * scale
+	var layout_scale := minf(viewport_size.x / DESIGN_SIZE.x, viewport_size.y / DESIGN_SIZE.y)
+	var side_margin := maxf(32.0 * layout_scale, viewport_size.x * 0.056)
+	var button_width := minf(360.0 * layout_scale, viewport_size.x - side_margin * 2.0)
+	var button_height := 76.0 * layout_scale
 
 	var title := get_node("Title") as Label
 	var score_caption := get_node("ScoreCaption") as Label
@@ -116,15 +116,15 @@ func _layout() -> void:
 	var main_menu := get_node("MainMenuButton") as NeonButton
 
 	title.position = Vector2(side_margin, viewport_size.y * 0.18)
-	title.size = Vector2(viewport_size.x - side_margin * 2.0, 82.0 * scale)
+	title.size = Vector2(viewport_size.x - side_margin * 2.0, 82.0 * layout_scale)
 	score_caption.position = Vector2(side_margin, viewport_size.y * 0.32)
-	score_caption.size = Vector2(viewport_size.x - side_margin * 2.0, 40.0 * scale)
+	score_caption.size = Vector2(viewport_size.x - side_margin * 2.0, 40.0 * layout_scale)
 	_score_label.position = Vector2(side_margin, viewport_size.y * 0.36)
-	_score_label.size = Vector2(viewport_size.x - side_margin * 2.0, 120.0 * scale)
+	_score_label.size = Vector2(viewport_size.x - side_margin * 2.0, 120.0 * layout_scale)
 	_best_label.position = Vector2(side_margin, viewport_size.y * 0.49)
-	_best_label.size = Vector2(viewport_size.x - side_margin * 2.0, 48.0 * scale)
+	_best_label.size = Vector2(viewport_size.x - side_margin * 2.0, 48.0 * layout_scale)
 	_new_best_label.position = Vector2(side_margin, viewport_size.y * 0.54)
-	_new_best_label.size = Vector2(viewport_size.x - side_margin * 2.0, 44.0 * scale)
+	_new_best_label.size = Vector2(viewport_size.x - side_margin * 2.0, 44.0 * layout_scale)
 	play_again.position = Vector2((viewport_size.x - button_width) * 0.5, viewport_size.y * 0.65)
 	play_again.size = Vector2(button_width, button_height)
 	main_menu.position = Vector2((viewport_size.x - button_width) * 0.5, viewport_size.y * 0.75)

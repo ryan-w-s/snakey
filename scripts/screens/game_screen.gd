@@ -121,24 +121,25 @@ func _layout() -> void:
 	if viewport_size == Vector2.ZERO:
 		viewport_size = DESIGN_SIZE
 
-	var scale := minf(viewport_size.x / DESIGN_SIZE.x, viewport_size.y / DESIGN_SIZE.y)
-	var side_margin := maxf(24.0 * scale, viewport_size.x * 0.055)
-	var top_margin := 44.0 * scale
-	var pause_width := minf(132.0 * scale, viewport_size.x * 0.28)
-	var pause_height := 56.0 * scale
-	var board_size := minf(viewport_size.x - side_margin * 2.0, viewport_size.y * 0.58)
+	var layout_scale := minf(viewport_size.x / DESIGN_SIZE.x, viewport_size.y / DESIGN_SIZE.y)
+	var side_margin := maxf(24.0 * layout_scale, viewport_size.x * 0.055)
+	var top_margin := 44.0 * layout_scale
+	var pause_width := minf(132.0 * layout_scale, viewport_size.x * 0.28)
+	var pause_height := 56.0 * layout_scale
+	var max_board_size := minf(viewport_size.x - side_margin * 2.0, viewport_size.y * 0.58)
+	var board_size := _snap_board_size(max_board_size)
 	var board_x := (viewport_size.x - board_size) * 0.5
 	var board_y := viewport_size.y * 0.22
 
 	var title := get_node("Title") as Label
 	title.position = Vector2(side_margin, top_margin)
-	title.size = Vector2(viewport_size.x * 0.48, 48.0 * scale)
-	_pause_button.position = Vector2(viewport_size.x - side_margin - pause_width, top_margin - 2.0 * scale)
+	title.size = Vector2(viewport_size.x * 0.48, 48.0 * layout_scale)
+	_pause_button.position = Vector2(viewport_size.x - side_margin - pause_width, top_margin - 2.0 * layout_scale)
 	_pause_button.size = Vector2(pause_width, pause_height)
-	_score_label.position = Vector2(side_margin, 112.0 * scale)
-	_score_label.size = Vector2(viewport_size.x - side_margin * 2.0, 40.0 * scale)
-	_best_label.position = Vector2(side_margin, 152.0 * scale)
-	_best_label.size = Vector2(viewport_size.x - side_margin * 2.0, 34.0 * scale)
+	_score_label.position = Vector2(side_margin, 112.0 * layout_scale)
+	_score_label.size = Vector2(viewport_size.x - side_margin * 2.0, 40.0 * layout_scale)
+	_best_label.position = Vector2(side_margin, 152.0 * layout_scale)
+	_best_label.size = Vector2(viewport_size.x - side_margin * 2.0, 34.0 * layout_scale)
 	_game.position = Vector2(board_x, board_y)
 	_game.size = Vector2(board_size, board_size)
 
@@ -147,14 +148,23 @@ func _layout() -> void:
 	var paused_label := _pause_overlay.get_node("PausedLabel") as Label
 	var resume := _pause_overlay.get_node("ResumeButton") as NeonButton
 	var menu := _pause_overlay.get_node("MenuButton") as NeonButton
-	var menu_button_width := minf(360.0 * scale, viewport_size.x - side_margin * 2.0)
-	var menu_button_height := 76.0 * scale
+	var menu_button_width := minf(360.0 * layout_scale, viewport_size.x - side_margin * 2.0)
+	var menu_button_height := 76.0 * layout_scale
 	paused_label.position = Vector2(40, viewport_size.y * 0.34)
 	paused_label.size = Vector2(viewport_size.x - 80, 72)
 	resume.position = Vector2((viewport_size.x - menu_button_width) * 0.5, viewport_size.y * 0.48)
 	resume.size = Vector2(menu_button_width, menu_button_height)
 	menu.position = Vector2((viewport_size.x - menu_button_width) * 0.5, viewport_size.y * 0.58)
 	menu.size = Vector2(menu_button_width, menu_button_height)
+
+
+func _snap_board_size(max_board_size: float) -> float:
+	var cell_count := _game.columns if _game.columns >= _game.rows else _game.rows
+	if cell_count <= 0:
+		return max_board_size
+
+	var snapped_size := floorf(max_board_size / float(cell_count)) * float(cell_count)
+	return maxf(float(cell_count), snapped_size)
 
 
 func _on_score_changed(score: int, best_score: int) -> void:

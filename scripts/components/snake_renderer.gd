@@ -50,9 +50,19 @@ func _draw_snake() -> void:
 
 
 func _cell_rect(cell: Vector2i, inset: float) -> Rect2:
-	var cell_size := Vector2(size.x / float(columns), size.y / float(rows))
-	var cell_position := Vector2(cell.x * cell_size.x, cell.y * cell_size.y)
-	return Rect2(cell_position + Vector2(inset, inset), cell_size - Vector2(inset * 2.0, inset * 2.0))
+	if columns <= 0 or rows <= 0:
+		return Rect2()
+
+	var left := _grid_boundary(cell.x, columns, size.x)
+	var top := _grid_boundary(cell.y, rows, size.y)
+	var right := _grid_boundary(cell.x + 1, columns, size.x)
+	var bottom := _grid_boundary(cell.y + 1, rows, size.y)
+	var bounds := Rect2(Vector2(left, top), Vector2(right - left, bottom - top))
+	return bounds.grow(-inset)
+
+
+func _grid_boundary(index: int, count: int, length: float) -> float:
+	return length * float(index) / float(count)
 
 
 func draw_rounded_rect(rect: Rect2, color: Color, _radius: float) -> void:

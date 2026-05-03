@@ -81,10 +81,10 @@ func _layout() -> void:
 	if viewport_size == Vector2.ZERO:
 		viewport_size = DESIGN_SIZE
 
-	var scale := minf(viewport_size.x / DESIGN_SIZE.x, viewport_size.y / DESIGN_SIZE.y)
-	var side_margin := maxf(32.0 * scale, viewport_size.x * 0.067)
-	var button_width := minf(360.0 * scale, viewport_size.x - side_margin * 2.0)
-	var button_height := 76.0 * scale
+	var layout_scale := minf(viewport_size.x / DESIGN_SIZE.x, viewport_size.y / DESIGN_SIZE.y)
+	var side_margin := maxf(32.0 * layout_scale, viewport_size.x * 0.067)
+	var button_width := minf(360.0 * layout_scale, viewport_size.x - side_margin * 2.0)
+	var button_height := 76.0 * layout_scale
 
 	var title := get_node("Title") as Label
 	var subtitle := get_node("Subtitle") as Label
@@ -92,15 +92,15 @@ func _layout() -> void:
 	var hint := get_node("Hint") as Label
 
 	title.position = Vector2(side_margin, viewport_size.y * 0.24)
-	title.size = Vector2(viewport_size.x - side_margin * 2.0, 120.0 * scale)
-	subtitle.position = Vector2(side_margin, title.position.y + 104.0 * scale)
-	subtitle.size = Vector2(viewport_size.x - side_margin * 2.0, 40.0 * scale)
+	title.size = Vector2(viewport_size.x - side_margin * 2.0, 120.0 * layout_scale)
+	subtitle.position = Vector2(side_margin, title.position.y + 104.0 * layout_scale)
+	subtitle.size = Vector2(viewport_size.x - side_margin * 2.0, 40.0 * layout_scale)
 	_best_label.position = Vector2(side_margin, viewport_size.y * 0.48)
-	_best_label.size = Vector2(viewport_size.x - side_margin * 2.0, 48.0 * scale)
+	_best_label.size = Vector2(viewport_size.x - side_margin * 2.0, 48.0 * layout_scale)
 	play_button.position = Vector2((viewport_size.x - button_width) * 0.5, viewport_size.y * 0.61)
 	play_button.size = Vector2(button_width, button_height)
 	hint.position = Vector2(side_margin, viewport_size.y * 0.78)
-	hint.size = Vector2(viewport_size.x - side_margin * 2.0, 48.0 * scale)
+	hint.size = Vector2(viewport_size.x - side_margin * 2.0, 48.0 * layout_scale)
 
 
 func _update_best_score() -> void:
